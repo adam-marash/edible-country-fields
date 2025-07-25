@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Edible Country Fields
  * Description: Dynamically populates country-specific data using shortcodes, with data sourced from Google Sheets.
- * Version: 1.0.5
+ * Version: 1.0.6
  * Author: Edible
  */
 

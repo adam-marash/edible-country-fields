@@ -76,7 +76,7 @@ function ecf_queue_all_country_posts() {
     
     // Also queue cleanup job to run after all posts are created
     as_schedule_single_action(
-        time() + 60, // Run 1 minute later to allow posts to be created first
+        time(), // Schedule immediately - Action Scheduler handles job ordering
         'ecf_cleanup_orphaned_posts_job',
         array(),
         'ecf_country_posts'
