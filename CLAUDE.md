@@ -92,3 +92,6 @@ This plugin operates within a WordPress environment at `/wp-content/plugins/edib
 - **Business logic files**: Data processing, post creation, API calls, complex operations
 - **Exception**: JavaScript/jQuery can be included locally in admin files when needed for UI interactions
 - **Pattern**: Admin handlers should be thin wrappers that call business logic functions from other files
+
+## Release Management
+- **Version Bumping**: Always bump the version number (third-level increment) in the main plugin file (`edible-country-fields.php`) before every push to maintain proper version tracking
