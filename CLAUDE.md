@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a WordPress plugin called "Country Data Fields" that dynamically displays country-specific data using shortcodes. The plugin extracts country codes from post titles and fetches corresponding field data from a Google Sheets data source.
+This is a WordPress plugin called "Edible Country Fields" that dynamically displays country-specific data using shortcodes. The plugin uses post slugs as lookup keys and fetches corresponding field data from a Google Sheets data source. It also includes an admin interface for configuration and can automatically generate country posts using background processing.
 
 ## Core Architecture
 
@@ -20,43 +20,67 @@ edible-country-fields/
 ├── edible-country-fields.php                 # Main plugin file & WordPress plugin header
 ├── includes/
 │   ├── data-manager.php            # Google Sheets CSV fetching & caching logic
-│   └── shortcode-handler.php       # Dynamic shortcode interception & routing
+│   ├── shortcode-handler.php       # Dynamic shortcode interception & routing
+│   ├── admin.php                   # Admin interface (presentation layer only)
+│   └── post-generator.php          # Business logic for post creation & management
 └── shortcodes/
-    ├── country-title.php           # [country_title] implementation
-    ├── country-currency.php        # [country_currency] implementation
-    ├── country-price.php           # [country_price] implementation
-    └── [additional field files]    # Auto-loaded based on shortcode name
+    ├── country_area_codes_table.php # Special handler for area codes table formatting
+    └── country_neighbors_list.php   # Special handler for neighbors list with links
 ```
 
 ### Data Source Configuration
 - **Google Sheets**: Public sheet with CSV export capability
 - **URL Pattern**: `https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid=0`
-- **Data Structure**: `slug | field_name | field_value` columns
-- **Hard-coded Configuration**: Google Sheets URL and title template are configured directly in plugin code
+- **Data Structure**: Wide CSV format with columns: `slug`, `active`, `name`, `currency`, `price_first_pages`, etc.
+- **Admin Configuration**: Google Sheets URL is configurable via WordPress admin (Settings → Country Fields)
+- **Required Columns**: 
+  - `slug` - Used as post slug and lookup key
+  - `active` - Boolean (true/false) to control which countries are processed
+  - Additional columns map to shortcode fields
 
 ### Shortcode System
-- **Dynamic Loading**: Shortcode files in `/shortcodes/` directory are auto-loaded based on shortcode name
-- **Naming Convention**: `[country_fieldname]` maps to `/shortcodes/country-fieldname.php`
+- **Explicit Registration**: All shortcodes are registered using `add_shortcode()` based on mappings in `get_shortcode_mappings()`
+- **CSV Field Mapping**: Each shortcode maps to a specific CSV column (e.g., `country_price` → `price_first_pages`)
+- **Special Handlers**: Complex shortcodes like `country_area_codes_table` have dedicated PHP files in `/shortcodes/`
+- **Default Behavior**: Most shortcodes return raw field values from CSV data
 - **Error Handling**: Missing country codes or field data display explicit error messages (no fallback values)
+- **Available Shortcodes**: `country_name`, `country_currency`, `country_price`, `country_code`, `country_region`, etc.
 
 ## Development Notes
 
 ### Adding New Fields
-1. Add data rows to Google Sheets (slug, field_name, field_value)
-2. Create corresponding PHP file in `/shortcodes/` directory
-3. No changes required to core plugin files
+1. Add new column to Google Sheets CSV
+2. Add shortcode mapping to `get_shortcode_mappings()` in `shortcode-handler.php`
+3. For complex formatting, create PHP file in `/shortcodes/` directory
+4. Most fields work automatically with raw CSV data
 
 ### Caching Strategy
 - Cache key pattern: `country_data_cache`
-- Manual cache refresh capability required
-- WordPress transients API used for caching
+- Manual cache refresh via admin interface (Settings → Country Fields)
+- WordPress transients API used for caching (1 hour TTL)
+- Cache status and last update time displayed in admin
 
-### Title Template
-Hard-coded template: `'Send a fax to {country_name}'` - modify in plugin configuration as needed.
+### Post Generation System
+- **Background Processing**: Uses Action Scheduler for bulk operations
+- **Active Filtering**: Only countries marked `active=true` in CSV are processed
+- **Post Template**: Uses country name as title (e.g., "Jordan")
+- **Post Structure**: Custom post type 'country' with basic shortcode content
+- **Cleanup**: Automatic removal of posts for countries no longer marked as active
+
+### Admin Interface Features
+- **Settings Configuration**: Google Sheets URL management
+- **Cache Management**: Force refresh and status monitoring
+- **Test Post Generation**: Create single random country post for testing
+- **Bulk Generation**: Queue jobs for all active countries
+- **Notification System**: Success/error feedback with cleanup to prevent stacking
 
 ## WordPress Plugin Context
 
-This plugin operates within a WordPress environment at `/wp-content/plugins/edible-country-fields/`. It follows WordPress plugin development standards including proper plugin headers, WordPress coding standards, and WordPress API usage (transients, shortcodes).
+This plugin operates within a WordPress environment at `/wp-content/plugins/edible-country-fields/`. It follows WordPress plugin development standards including proper plugin headers, WordPress coding standards, and WordPress API usage (transients, shortcodes, Action Scheduler).
+
+### Dependencies
+- **Action Scheduler**: Required for background post generation (install as separate plugin)
+- **Custom Post Type**: Assumes 'country' post type exists (created elsewhere)
 
 ## Code style
 - Don't create OOP wrappers for standard WordPress API functions.

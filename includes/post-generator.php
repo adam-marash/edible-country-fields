@@ -26,7 +26,7 @@ function ecf_create_country_post($country_data) {
     
     // Get country name for title
     $country_name = isset($fields['name']) ? $fields['name'] : $slug;
-    $title = 'Send fax to ' . $country_name;
+    $title = $country_name;
     
     // Basic post content with shortcodes
     $content = '[country_name] | [country_currency] | [country_price]';
