@@ -15,7 +15,7 @@ function ecf_clean_notifications() {
     // Clean up stacked notifications on our settings page
     if (isset($_GET['page']) && $_GET['page'] === 'country-fields') {
         $current_url = $_SERVER['REQUEST_URI'];
-        $clean_params = array('settings-updated', 'error', 'refreshed', 'test_created', 'jobs_queued');
+        $clean_params = array('settings-updated', 'error', 'refreshed', 'test_created', 'test_url', 'test_title', 'jobs_queued');
         $has_multiple = 0;
         
         foreach ($clean_params as $param) {
@@ -32,7 +32,7 @@ function ecf_clean_notifications() {
             if (isset($_GET['error'])) {
                 $redirect_url .= '&error=' . $_GET['error'];
             } elseif (isset($_GET['test_created'])) {
-                $redirect_url .= '&test_created=' . $_GET['test_created'] . '&test_url=' . $_GET['test_url'];
+                $redirect_url .= '&test_created=' . $_GET['test_created'] . '&test_url=' . $_GET['test_url'] . '&test_title=' . $_GET['test_title'];
             } elseif (isset($_GET['jobs_queued'])) {
                 $redirect_url .= '&jobs_queued=' . $_GET['jobs_queued'];
             } elseif (isset($_GET['refreshed'])) {
@@ -155,7 +155,7 @@ function ecf_options_page() {
         
         <?php if (isset($_GET['test_created'])): ?>
             <div class="notice notice-success is-dismissible">
-                <p>Test post created successfully! <a href="<?php echo esc_url(urldecode($_GET['test_url'])); ?>" target="_blank">View Post</a></p>
+                <p>Test post created successfully! <a href="<?php echo esc_url(urldecode($_GET['test_url'])); ?>" target="_blank"><?php echo esc_html(urldecode($_GET['test_title'])); ?></a></p>
             </div>
         <?php endif; ?>
         
@@ -330,10 +330,12 @@ function ecf_handle_generate_test_post() {
     
     if ($post_id) {
         $post_url = get_permalink($post_id);
+        $post_title = get_the_title($post_id);
         wp_redirect(add_query_arg(array(
             'page' => 'country-fields',
             'test_created' => $post_id,
-            'test_url' => urlencode($post_url)
+            'test_url' => urlencode($post_url),
+            'test_title' => urlencode($post_title)
         ), admin_url('options-general.php')));
     } else {
         wp_redirect(add_query_arg(array(

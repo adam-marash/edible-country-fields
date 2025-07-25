@@ -95,3 +95,4 @@ This plugin operates within a WordPress environment at `/wp-content/plugins/edib
 
 ## Release Management
 - **Version Bumping**: Always bump the patch version number in the main plugin file (`edible-country-fields.php`) before every push to maintain proper version tracking
+- **Commit Messages**: Use clean, professional commit messages without "Generated with Claude Code" or "Co-Authored-By" footers
