@@ -5,7 +5,7 @@ A WordPress plugin that dynamically populates country-specific data using shortc
 ## Features
 
 - **Dynamic Shortcodes**: Automatically displays country-specific information based on post slug
-- **Google Sheets Integration**: Fetches data from a Google Sheets CSV export with automatic caching
+- **Google Sheets Integration**: Fetches data from a Google Sheets CSV export with manual cache refresh
 - **Admin Interface**: Easy configuration and cache management through WordPress admin
 - **Background Processing**: Uses Action Scheduler for efficient bulk post generation
 - **Country Post Generation**: Automatically creates WordPress posts for active countries
@@ -55,7 +55,7 @@ A WordPress plugin that dynamically populates country-specific data using shortc
 
 ## Admin Features
 
-- **Cache Management**: Force refresh data from Google Sheets
+- **Cache Management**: Manually refresh data from Google Sheets (cache never expires automatically)
 - **Test Post Generation**: Create a single random country post for testing
 - **Bulk Generation**: Queue background jobs to create posts for all active countries
 - **Cache Status**: View cache information and last update time

@@ -46,7 +46,7 @@ function get_cached_data() {
 }
 
 function cache_data($data) {
-    $result = set_transient('country_data_cache', $data, HOUR_IN_SECONDS);
+    $result = set_transient('country_data_cache', $data, 0); // Never expires automatically
     if ($result) {
         update_option('ecf_cache_last_updated', time());
     }

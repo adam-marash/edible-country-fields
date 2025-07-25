@@ -201,11 +201,11 @@ function ecf_options_page() {
                         <h2 class="hndle">Cache Management</h2>
                     </div>
                     <div class="inside">
-                        <p>Force refresh the country data from Google Sheets. This will clear the current cache and fetch fresh data.</p>
+                        <p>Refresh the country data from Google Sheets. This will clear the current cache and fetch fresh data.</p>
                         <form method="post" action="<?php echo admin_url('admin-post.php'); ?>">
                             <input type="hidden" name="action" value="ecf_force_refresh">
                             <?php wp_nonce_field('ecf_force_refresh'); ?>
-                            <?php submit_button('Force Refresh Cache', 'secondary', 'refresh', false, array('style' => 'width: 100%;')); ?>
+                            <?php submit_button('Refresh Cache', 'secondary', 'refresh', false, array('style' => 'width: 100%;')); ?>
                         </form>
                         
                         <?php
@@ -223,7 +223,7 @@ function ecf_options_page() {
                                 echo '<p><strong>Last Updated:</strong> ' . $formatted_time . '</p>';
                             }
                             
-                            echo '<p><strong>Cache Expires:</strong> Within 1 hour of last update</p>';
+                            echo '<p><strong>Cache Expires:</strong> Manual refresh only</p>';
                         } else {
                             echo '<hr>';
                             echo '<p><strong>Cache Status:</strong> Empty</p>';
@@ -276,18 +276,24 @@ function ecf_options_page() {
                         <h2 class="hndle">Available Shortcodes</h2>
                     </div>
                     <div class="inside">
+                        <?php
+                        $shortcode_mappings = get_shortcode_mappings();
+                        $special_shortcodes = array('country_area_codes_table', 'country_neighbors_list');
+                        $basic_shortcodes = array_diff(array_keys($shortcode_mappings), $special_shortcodes);
+                        ?>
+                        
                         <p><strong>Basic Usage:</strong></p>
                         <ul style="margin-left: 20px;">
-                            <li><code>[country_name]</code></li>
-                            <li><code>[country_currency]</code></li>
-                            <li><code>[country_price]</code></li>
-                            <li><code>[country_region]</code></li>
+                            <?php foreach ($basic_shortcodes as $shortcode): ?>
+                                <li><code>[<?php echo $shortcode; ?>]</code></li>
+                            <?php endforeach; ?>
                         </ul>
                         
                         <p><strong>Special Formatting:</strong></p>
                         <ul style="margin-left: 20px;">
-                            <li><code>[country_area_codes_table]</code></li>
-                            <li><code>[country_neighbors_list]</code></li>
+                            <?php foreach ($special_shortcodes as $shortcode): ?>
+                                <li><code>[<?php echo $shortcode; ?>]</code></li>
+                            <?php endforeach; ?>
                         </ul>
                         
                         <p><em>Use these shortcodes in posts or pages. The plugin uses the post slug to determine which country data to display.</em></p>

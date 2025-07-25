@@ -57,8 +57,9 @@ edible-country-fields/
 ### Caching Strategy
 - Cache key pattern: `country_data_cache`
 - Manual cache refresh via admin interface (Settings → Country Fields)
-- WordPress transients API used for caching (1 hour TTL)
+- WordPress transients API used for caching (never expires automatically)
 - Cache status and last update time displayed in admin
+- Data is cached indefinitely until manually refreshed - suitable for slowly-changing country data
 
 ### Post Generation System
 - **Background Processing**: Uses Action Scheduler for bulk operations
