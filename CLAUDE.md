@@ -94,4 +94,4 @@ This plugin operates within a WordPress environment at `/wp-content/plugins/edib
 - **Pattern**: Admin handlers should be thin wrappers that call business logic functions from other files
 
 ## Release Management
-- **Version Bumping**: Always bump the version number (third-level increment) in the main plugin file (`edible-country-fields.php`) before every push to maintain proper version tracking
+- **Version Bumping**: Always bump the patch version number in the main plugin file (`edible-country-fields.php`) before every push to maintain proper version tracking
