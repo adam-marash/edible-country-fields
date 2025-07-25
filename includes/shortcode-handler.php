@@ -42,6 +42,7 @@ function get_shortcode_mappings() {
         'country_price' => 'price_first_pages',
         'country_price_next_page' => 'price_next_page',
         'country_name' => 'name',
+        'country_name_prefix' => 'name_prefix',
         'country_code' => 'idd',
         'country_demonym_plural' => 'demonym',
         'country_language' => 'language',
