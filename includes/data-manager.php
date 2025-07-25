@@ -123,5 +123,8 @@ function get_field_value($country_slug, $field_name) {
         return 'Error: Field "' . esc_html($field_name) . '" not available for country "' . esc_html($country_slug) . '"';
     }
     
-    return $data[$found_country_slug][$field_name];
+    $field_value = $data[$found_country_slug][$field_name];
+    
+    // Return empty string if field is empty, rather than showing empty content
+    return trim($field_value) === '' ? '' : $field_value;
 }
