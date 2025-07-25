@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Edible Country Fields
  * Description: Dynamically populates country-specific data using shortcodes, with data sourced from Google Sheets.
- * Version: 1.0.8
+ * Version: 1.0.9
  * Author: Edible
  */
 
@@ -15,6 +15,7 @@ function ecf_init() {
     require_once ECF_PLUGIN_DIR . 'includes/data-manager.php';
     require_once ECF_PLUGIN_DIR . 'includes/shortcode-handler.php';
     require_once ECF_PLUGIN_DIR . 'includes/post-generator.php';
+    require_once ECF_PLUGIN_DIR . 'includes/title-filter.php';
     
     if (is_admin()) {
         require_once ECF_PLUGIN_DIR . 'includes/admin.php';
