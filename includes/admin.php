@@ -129,7 +129,7 @@ function ecf_handle_force_refresh() {
 function ecf_options_page() {
     ?>
     <div class="wrap">
-        <h1>Country Fields Settings</h1>
+        <h1>Country Fields Settings <small style="font-size: 0.6em; color: #666; font-weight: normal;">v<?php echo get_plugin_data(ECF_PLUGIN_DIR . 'edible-country-fields.php')['Version']; ?></small></h1>
         
         <?php if (isset($_GET['refreshed'])): ?>
             <div class="notice notice-success is-dismissible">
